@@ -9,7 +9,7 @@ var main = {
         var data = {
             title: $('#title').val(),
             author: $('#author').val(),
-            concat: $('#content').val()
+            content: $('#content').val()
         };
 
         $.ajax({
