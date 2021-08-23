@@ -1,5 +1,6 @@
 package com.thguss.book.springboot.web;
 
+import com.thguss.book.springboot.config.auth.LoginUser;
 import com.thguss.book.springboot.config.auth.dto.SessionUser;
 import com.thguss.book.springboot.service.posts.PostsService;
 import com.thguss.book.springboot.web.dto.PostsResponseDto;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
@@ -16,13 +18,10 @@ import javax.servlet.http.HttpSession;
 public class IndexController {
 
     private final PostsService postsService;
-    private final HttpSession httpSession;
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, @LoginUser SessionUser user) { // @LoginUser로 세션 가져오기
         model.addAttribute("posts", postsService.findAllDesc());
-
-        SessionUser user = (SessionUser) httpSession.getAttribute("user"); //로그인 성공 시 세션에 정보 저장
 
         if(user != null){ // user 값이 있으면 model에 userName으로 등록
             model.addAttribute("userName", user.getName());
